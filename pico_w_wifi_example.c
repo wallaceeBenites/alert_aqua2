@@ -30,7 +30,8 @@ bool alarme_ativo = false;
 "<!DOCTYPE html>" \
 "<html>" \
 "<head><title>Status do Alarme</title>" \
-"<meta charset='UTF-8'></head>" \
+"<meta charset='UTF-8'>" \
+"<style> body { background-color: black; color: white; } </style></head>" \
 "<body>" \
 "<center>" \
 "<h1 style='font-size: 30px;'> AMBIENTE DE TESTE - NÃO LIGUE PARA APARÊNCIA </h1>" \
@@ -44,6 +45,7 @@ bool alarme_ativo = false;
 "</center>" \
 "</body>" \
 "</html>\r\n"
+
 
 
 // Função de callback para processar requisições HTTP
@@ -192,7 +194,7 @@ int main() {
     
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
-    
+
     gpio_init(BUZZER_A_PIN);
     gpio_set_dir(BUZZER_A_PIN, GPIO_OUT);
 
