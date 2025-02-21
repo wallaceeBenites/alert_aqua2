@@ -7,20 +7,20 @@
 #include "lwip/tcp.h"
 
 // Definição dos pinos
-#define LED_PIN 12        // Define o pino do LED (GP12)
+#define LED_PIN 12        // Pino do LED (GP12)
 #define BUZZER_A_PIN 21   // Pino do Buzzer A (GP21)
 #define BUZZER_B_PIN 10   // Pino do Buzzer B (GP10)
-#define BUTTON_ALARM_ON 5  // Botão A (GP5) para ligar alarmes
-#define BUTTON_ALARM_OFF 6 // Botão B (GP6) para desligar alarmes
-#define VSYS_PIN 29        // Pino para leitura da tensão VSYS
+#define BUTTON_ALARM_ON 5  // Botão para ligar alarmes (GP5)
+#define BUTTON_ALARM_OFF 6 // Botão para desligar alarmes (GP6)
+#define VSYS_PIN 29        // Pino para leitura da tensão VSYS (GP29)
 
 // Definições para leitura da tensão VSYS
 #define USB_CONNECTED_VOLTAGE 4.7f  // Consideramos USB conectado acima de 4.7V
 #define NUM_AMOSTRAS 10             // Número de leituras para média móvel
 
 // Configurações do Wi-Fi
-#define WIFI_SSID "As 3 Marias"  // Substitua pelo nome da sua rede Wi-Fi
-#define WIFI_PASS "DRC290479" // Substitua pela senha da sua rede Wi-Fi
+#define WIFI_SSID "As 3 Marias"  // Nome da rede Wi-Fi
+#define WIFI_PASS "DRC290479"    // Senha da rede Wi-Fi
 
 // Estado do alarme
 bool alarme_ativo = false;
@@ -45,8 +45,6 @@ bool alarme_ativo = false;
 "</center>" \
 "</body>" \
 "</html>\r\n"
-
-
 
 // Função de callback para processar requisições HTTP
 static err_t http_callback(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err) {
@@ -131,7 +129,6 @@ void configurar_pwm() {
 
 // Função para emitir o padrão de bipes
 void emitir_bipes() {
-
     gpio_put(LED_PIN, 1);  // Liga o LED
 
     // Aciona os buzzers
@@ -165,7 +162,6 @@ void iniciar_alerta() {
 
 // Função para desativar o alarme
 void parar_alerta() {
-
     gpio_put(LED_PIN, 0);  // Desliga o LED
     // Desabilita o PWM nos buzzers
     pwm_set_enabled(slice_num_a, false);
@@ -191,7 +187,6 @@ int main() {
     adc_gpio_init(VSYS_PIN);
 
     // Inicialização dos pinos
-    
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
 
@@ -241,7 +236,7 @@ int main() {
 
     while (1) {
         // Verifica se o botão A foi pressionado para ativar o alarme
-        if (gpio_get(BUTTON_ALARM_ON) == 0 && !alarme_ativo) {
+        if (gpio_get(BUTTON_ALARM_ON) == 0 || alarme_ativo) {
             iniciar_alerta();
             sleep_ms(300);  // Debounce básico
         }
